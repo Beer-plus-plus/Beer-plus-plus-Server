@@ -10,22 +10,13 @@ const cors = require('cors');
 require('dotenv').config();
 
 mongoose.set('useCreateIndex', true);
-mongoose
-  .connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     console.log('connected to: ', process.env.MONGO_URL);
   })
   .catch((error) => {
     console.error(error);
   });
-
-// mongoose.connect(process.env.MONGO_URL, {
-//   keepAlive: true,
-//   useNewUrlParser: true,
-//   reconnectTries: Number.MAX_VALUE,
-//   useCreateIndex: true,
-//   useFindAndModify: false,
-// });
 
 const authRouter = require('./routes/auth');
 
