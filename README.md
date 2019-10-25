@@ -20,33 +20,87 @@ SPA about beers, which shows where to drink them and with which to pair them
 
 **User**
 
--
+- As a User I want to be able to modify all my profile data and have it updated.
+- As a user I want to be able to add an image to my user profile, so that other users can see me.
+
 
 **Beer**
 
--
+- As a user I want to be able to create beers, so that other people can meet them.
 
-## **Site**
+- As a user I want to be able to update beers, so that other people know the new data I provide.
+
+- As a user I want to be able to delete a beer that I have created, because it is possible that it is no longer supplied.
+
+- As a user I want to be able to add a picture of the beer that I have added to the database, so that other people can know it visually.
+
+- As a user I want to be able to search for beers by name in the search bar.
+
+- As a user I want to be able to see the details of a beer that you have previously searched.
+
+- As a user I want to be able to create comment about a beer that you have previously searched.
+
+- As a user I want to be able to delete my comment, which I created about a beer.
+
+- As a user I want to be able to edit my comment, which I created about a beer.
+
+- As a user I want to be able to mark a beer as my favorite.
+
+- As a user I want to be able to add a tapa that matches well with a beer, to the profile of a beer, to inform other users.
+
+**Site**
+
+- As a user, I can be a bar owner / user and want to create a profile, so that other people know it.
+
+- As a user, I want to be able to edit the bar or brewery data so that the rest of the user is aware of the new data.
+
+- As a user I want to be able to erase data from a restaurant or brewery, because it may have ceased to exist.
+
+- As a user I want to be able to remove a bar from the list of my favorites, because I may have stopped liking it.
+
+- As a user I want to be able to create comment about a bar that you have previously searched.
+
+
+
+**Food**
+
+- As a user I want to be able to create tapa, so that other people can meet them.
+
+- As a user I want to be able to update tapa, so that other people know the new data I provide.
+
+- As a user I want to be able to delete a tapa that I have created, because it is possible that it is no longer supplied.
+
+- As a user I want to be able to add a picture of the tapa that I have added to the database, so that other people can know it visually.
+
+- As a user I want to be able to search for tapa by name in the search bar.
+
+- As a user I want to be able to see the details of a tapa that you have previously searched.
+
+- As a user I want to be able to create comment about a tapa that you have previously searched.
+
+- As a user I want to be able to delete my comment, which I created about a tapa.
+
+- As a user I want to be able to edit my comment, which I created about a tapa.
+
+- As a user I want to be able to mark a tapa as my favorite.
+
+
 
 ## Backlog
 
 List of other features outside of the MVPs scope
 
-**User profile:**
+- As a user I want to be able to search for a bar in the search bar, by name.
 
--
+- As a user I want to be able to add a bar among my favorites, which I have previously searched for.
 
-**Pet:**
+- As a user I want to be able to add a beer that I have previously found to a bar that I already know. For other users to know that there you can drink.
 
--
+- As a user I want to be able to see what tapas other users recommend with the beer I'm looking for.
 
-**Events:**
+- As a user I want to be able to see on a map the bars that are in the database near me. and mark the ones that appear with my favorites.
 
--
-
-**Searches:**
-
--
+- As a user I want to be able to mark a bar that I have found on the map as my favorite but it is still
 
 ## ROUTES
 
