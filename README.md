@@ -23,7 +23,6 @@ SPA about beers, which shows where to drink them and with which to pair them
 - As a User I want to be able to modify all my profile data and have it updated.
 - As a user I want to be able to add an image to my user profile, so that other users can see me.
 
-
 **Beer**
 
 - As a user I want to be able to create beers, so that other people can meet them.
@@ -60,8 +59,6 @@ SPA about beers, which shows where to drink them and with which to pair them
 
 - As a user I want to be able to create comment about a bar that you have previously searched.
 
-
-
 **Food**
 
 - As a user I want to be able to create tapa, so that other people can meet them.
@@ -84,8 +81,6 @@ SPA about beers, which shows where to drink them and with which to pair them
 
 - As a user I want to be able to mark a tapa as my favorite.
 
-
-
 ## Backlog
 
 List of other features outside of the MVPs scope
@@ -104,16 +99,26 @@ List of other features outside of the MVPs scope
 
 ## ROUTES
 
-| Mockup | Name            | Method | Endpoint         | Description                                | Body                                                           | Redirects |
-| :----: | :-------------- | :----- | :--------------- | :----------------------------------------- | :------------------------------------------------------------- | :-------- |
-|       | Home            | GET    | /                | Show home page                             | -                                                              |           |
-|       | Sign Up Form    | GET    | /signup          | User see the form in order to sign up      | -                                                              |           |
-|       | Sign Up         | POST   | /signup          | Sign up a user                             | {email, password}                                              | /profile  |
-|       | Log In Form     | GET    | /login           | User see the form in order to log in       | -                                                              |           |
-|       | Log In          | POST   | /login           | Log in a user                              | {email, password}                                              | /profile  |
-|        | Log Out         | POST   | /logout          | Log out a user 
+**Frontend**
 
+| Endpoint  | Description  |
+| :-------- | :----------- |
+| '/'       | Home page    |
+| '/signup' | Sign Up Page |
+| '/login'  | Login Page   |
+| '/logout  | Logout the Session      |
+| '        |      |
 
+**Backend**
+
+| Mockup | Name         | Method | Endpoint | Description                           | Body              | Redirects |
+| :----: | :----------- | :----- | :------- | :------------------------------------ | :---------------- | :-------- |
+|        | Home         | GET    | /        | Show home page                        | -                 |           |
+|        | Sign Up Form | GET    | /signup  | User see the form in order to sign up | -                 |           |
+|        | Sign Up      | POST   | /signup  | Sign up a user                        | {email, password} | /profile  |
+|        | Log In Form  | GET    | /login   | User see the form in order to log in  | -                 |           |
+|        | Log In       | POST   | /login   | Log in a user                         | {email, password} | /profile  |
+|        | Log Out      | POST   | /logout  | Log out a user                        |
 
 ## Models
 
@@ -167,4 +172,3 @@ List of other features outside of the MVPs scope
 ### Slides
 
 [Slides Link](slides)
-
