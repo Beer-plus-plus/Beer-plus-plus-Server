@@ -101,13 +101,13 @@ List of other features outside of the MVPs scope
 
 **Frontend**
 
-| Endpoint  | Description  |
-| :-------- | :----------- |
-| '/'       | Home page    |
-| '/signup' | Sign Up Page |
-| '/login'  | Login Page   |
-| '/logout  | Logout the Session      |
-| '        |      |
+| Endpoint  | Description        |
+| :-------- | :----------------- |
+| '/'       | Home page          |
+| '/signup' | Sign Up Page       |
+| '/login'  | Login Page         |
+| '/logout  | Logout the Session |
+| '         |                    |
 
 **Backend**
 
@@ -125,20 +125,27 @@ List of other features outside of the MVPs scope
 **_User Model_**
 
 ```javascript
- {
-    username:{ type: String, required: true, unique: true },
-    email: { type: String, required: true, unique: true },
+const userSchema = new Schema(
+  {
+    username: { type: String, required: true, unique: true },
     hashedPassword: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
     name: { type: String },
     lastName: { type: String },
-    location:{latitude:{type: String}, longitude:{type: String}}
+    location: { latitude: { type: String }, longitude: { type: String } },
     img: { type: String },
+    preferredBeers: [{ type: Schema.Types.ObjectId, ref: "Beer" }],
+    preferredFoods: [{ type: Schema.Types.ObjectId, ref: "Food" }],
+    preferredSites: [{ type: Schema.Types.ObjectId, ref: "Site" }],
+    preferredUsers: [{ type: Schema.Types.ObjectId, ref: "Site" }]
   },
-
   {
-    timestamps: true,
+    timestamps: {
+      createdAt: "created_at",
+      updatedAt: "updated_at"
+    }
   }
-
+);
 ```
 
 **_Brewery Model_**

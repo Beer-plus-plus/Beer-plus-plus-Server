@@ -6,6 +6,15 @@ const userSchema = new Schema(
   {
     username: { type: String, required: true, unique: true },
     hashedPassword: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    name: { type: String },
+    lastName: { type: String },
+    location: { latitude: { type: String }, longitude: { type: String } },
+    img: { type: String },
+    preferredBeers: [{ type: Schema.Types.ObjectId, ref: 'Beer' }],
+    preferredFoods: [{ type: Schema.Types.ObjectId, ref: 'Food' }],
+    preferredSites: [{ type: Schema.Types.ObjectId, ref: 'Site' }],
+    preferredUsers: [{ type: Schema.Types.ObjectId, ref: 'Site' }],
   },
   {
     timestamps: {

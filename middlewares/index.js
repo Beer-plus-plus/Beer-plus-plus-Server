@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 const checkIfLoggedIn = (req, res, next) => {
   if (req.session.currentUser) {
     next();
@@ -18,7 +17,19 @@ const checkUsernameAndPasswordNotEmpty = (req, res, next) => {
   }
 };
 
+const checkUsernameAndPasswordAndEmailNotEmpty = (req, res, next) => {
+  const { username, password, email } = req.body;
+
+  if (username !== '' && password !== '' && email !== '') {
+    res.locals.auth = req.body;
+    next();
+  } else {
+    res.status(422).json({ code: 'validation' });
+  }
+};
+
 module.exports = {
   checkIfLoggedIn,
   checkUsernameAndPasswordNotEmpty,
+  checkUsernameAndPasswordAndEmailNotEmpty,
 };
