@@ -19,6 +19,7 @@ mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopol
   });
 
 const authRouter = require('./routes/auth');
+const userRouter = require('./routes/user');
 
 const app = express();
 
@@ -56,6 +57,8 @@ app.use((req, res, next) => {
 });
 
 app.use('/', authRouter);
+app.use('/api/user', authRouter);
+
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

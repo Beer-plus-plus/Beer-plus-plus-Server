@@ -25,7 +25,7 @@ router.post(
   checkUsernameAndPasswordAndEmailNotEmpty,
   async (req, res, next) => {
     const { username, password, email } = res.locals.auth;
-      try {
+    try {
       const user = await User.findOne({ username });
       if (user) {
         return res.status(422).json({ code: 'username-not-unique' });
