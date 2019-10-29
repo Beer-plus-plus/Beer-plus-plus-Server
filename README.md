@@ -21,7 +21,8 @@ SPA about beers, which shows where to drink them and with which to pair them
 **User**
 
 - As a User I want to be able to modify all my profile data and have it updated.
-- As a user I want to be able to add an image to my user profile, so that other users can see me.
+- As a User I want to be able to add an image to my user profile, so that other users can see me.
+- As a User I want to be able to change the access password. 
 
 **Beer**
 
