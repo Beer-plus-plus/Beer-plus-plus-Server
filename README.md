@@ -134,40 +134,97 @@ const userSchema = new Schema(
     lastName: { type: String },
     location: { latitude: { type: String }, longitude: { type: String } },
     img: { type: String },
-    preferredBeers: [{ type: Schema.Types.ObjectId, ref: "Beer" }],
-    preferredFoods: [{ type: Schema.Types.ObjectId, ref: "Food" }],
-    preferredSites: [{ type: Schema.Types.ObjectId, ref: "Site" }],
-    preferredUsers: [{ type: Schema.Types.ObjectId, ref: "Site" }]
+    preferredBeers: [{ type: Schema.Types.ObjectId, ref: 'Beer' }],
+    preferredFoods: [{ type: Schema.Types.ObjectId, ref: 'Food' }],
+    preferredSites: [{ type: Schema.Types.ObjectId, ref: 'Site' }],
+    preferredUsers: [{ type: Schema.Types.ObjectId, ref: 'Site' }],
   },
   {
     timestamps: {
-      createdAt: "created_at",
-      updatedAt: "updated_at"
-    }
-  }
+      createdAt: 'created_at',
+      updatedAt: 'updated_at',
+    },
+  },
 );
 ```
 
-**_Brewery Model_**
+**_Site Model_**
 
 ```javascript
-{
-
+const siteSchema = new Schema(
+  {
+    nameDisplay: { type: String, required: true, unique: true },
+    breweryStyle: { type: String },
+    Address: {
+      street: { type: String },
+      number: { type: String },
+      zipcode: { type: String },
+      longitude: { type: Number },
+      latitude: { type: Number },
+    },
+    image: { type: String },
+    brand: { type: String },
+    beers: [{ type: Schema.Types.ObjectId, ref: 'Beer' }],
+    foods: [{ type: Schema.Types.ObjectId, ref: 'Food' }],
   },
   {
-    timestamps: true,
-  }
+    timestamps: {
+      createdAt: 'created_at',
+      updatedAt: 'updated_at',
+    },
+  },
+);
 ```
 
 **_Beer Model_**
 
 ```javascript
+  const beerSchema = new Schema(
   {
+    nameDisplay: { type: String, required: true, unique: true },
+    Description: { type: String },
+    beerStyle: { type: String },
+    ingredients: [{ name: { type: String }, qty: { type: Number } }],
+    ABV: { type: Number }, /* Alcohol By Volume */
+    IBU: { type: Number }, /* International Bitterness Units */ 
+    cal: { type: Number },
+    origin: { type: String }, /* (International Bitterness Units */
+    image: { type: String },
+    brand: { type: String },
+    productionYear: { type: Number },
+    servingTemperature: { type: Number }, /* Degrees */
+  },
+  {
+    timestamps: {
+      createdAt: 'created_at',
+      updatedAt: 'updated_at',
+    },
+  },
+);
+```
+**_Food Model_**
 
-   },
+```javascript
+const foodSchema = new Schema(
   {
-    timestamps: true,
-  }
+    nameDisplay: { type: String, required: true, unique: true },
+    Description: { type: String },
+    BeerStyle: { type: String },
+    cal: { type: Number },
+    image: { type: String },
+    brand: { type: String },
+    countryOrigin: { type: String },
+    productionYear: { type: Number },
+    pairingBeer: [{ type: Schema.Types.ObjectId, ref: 'Beer' }],
+    ingredients: [{ name: { type: String }, qty: { type: Number } }],
+  },
+  {
+    timestamps: {
+      createdAt: 'created_at',
+      updatedAt: 'updated_at',
+    },
+  },
+);
 ```
 
 ### Git
