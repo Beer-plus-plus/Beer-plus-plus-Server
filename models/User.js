@@ -9,7 +9,7 @@ const userSchema = new Schema(
     email: { type: String, required: true, unique: true },
     name: { type: String },
     lastName: { type: String },
-    location: { latitude: { type: String }, longitude: { type: String } },
+    location: { latitude: { type: Number }, longitude: { type: Number } },
     img: { type: String },
     preferredBeers: [{ type: Schema.Types.ObjectId, ref: 'Beer' }],
     preferredFoods: [{ type: Schema.Types.ObjectId, ref: 'Food' }],
