@@ -5,6 +5,8 @@ const Beer = require('../models/Beer');
 
 
 /* get a list o beer on db*/
+
+router.get ('/beer')
 /* get detail o beer */
 /* Update a beer */
 /* Delete a beer */
