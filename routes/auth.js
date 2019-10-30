@@ -25,6 +25,7 @@ router.post(
   checkUsernameAndPasswordAndEmailNotEmpty,
   async (req, res, next) => {
     const { username, password, email } = res.locals.auth;
+    console.log(username, password, email);
     try {
       const user = await User.findOne({ username });
       if (user) {
@@ -36,7 +37,6 @@ router.post(
           .status(422)
           .json({ code: 'This email is already being used' });
       }
-
       const salt = bcrypt.genSaltSync(bcryptSalt);
       const hashedPassword = bcrypt.hashSync(password, salt);
       const newUser = await User.create({ username, hashedPassword, email });

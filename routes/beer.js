@@ -8,7 +8,7 @@ const Beer = require('../models/Beer');
 router.get('/', async (req, res, next) => {
   try {
     const beer = await Beer.find();
-    console.log(beer);
+    return res.json(beer);
   } catch (err) {
     next(err);
   }
