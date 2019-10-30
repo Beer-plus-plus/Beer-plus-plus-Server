@@ -1,5 +1,5 @@
 const express = require('express');
-const bcrypt = require('bcrypt'); /* Use to change de password */
+const bcrypt = require('bcryptjs'); /* Use to change de password */
 
 const bcryptSalt = 10;
 
