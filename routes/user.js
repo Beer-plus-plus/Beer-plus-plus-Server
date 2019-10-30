@@ -1,5 +1,5 @@
 const express = require('express');
-const bcrypt = require('bcryptjs'); /* Use to change de password */
+const bcrypt = require('bcrypt'); /* Use to change de password */
 
 const bcryptSalt = 10;
 
@@ -25,7 +25,6 @@ router.get('/:userId', async (req, res, next) => {
 /* To change or update de user password */
 
 router.put('/:userId/changepass', async (req, res, next) => {
-  // console.log(req.session.currentUser);
   const { userId } = req.params;
   const { oldPass, newPass } = req.body;
   if (oldPass === newPass) {
@@ -60,16 +59,26 @@ router.put('/:userId/changepass', async (req, res, next) => {
 /* Update user data except password */
 
 router.put('/:userId', async (req, res, next) => {
- const { userId } = req.params;
-  const { username, email, name, lastName, latitude, longitude } = req.body;
+  const { userId } = req.params;
+  const {
+    email, name, lastName, latitude, longitude,
+  } = req.body;
+
   try {
+    const users = await User.find(email);
+    if (users.legth > 0) {
+      for (let i = 0; i < users.length; i++) {
+        if (users[i].email === email && users[i].id !== userId) {
+          return res.setTimeout(500).json({ error: 'This email exist' });
+        }
+      }
+    }
     const user = await User.findByIdAndUpdate(
       {
         _id: userId,
       },
       {
         $set: {
-          username,
           email,
           name,
           lastName,
