@@ -1,5 +1,5 @@
 const express = require('express');
-const bcrypt = require('bcrypt'); /* Use to change de password */
+const bcrypt = require('bcryptjs'); /* Use to change de password */
 
 const bcryptSalt = 10;
 
@@ -60,7 +60,7 @@ router.put('/:userId/changepass', async (req, res, next) => {
 /* Update user data except password */
 
 router.put('/:userId', async (req, res, next) => {
-  const { userId } = req.params;
+ const { userId } = req.params;
   const { username, email, name, lastName, latitude, longitude } = req.body;
   try {
     const user = await User.findByIdAndUpdate(
