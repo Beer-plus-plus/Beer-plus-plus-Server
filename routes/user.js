@@ -1,5 +1,5 @@
 const express = require('express');
-const bcrypt = require('bcryptjs'); /* Use to change de password */
+const bcrypt = require('bcrypt'); /* Use to change de password */
 
 const bcryptSalt = 10;
 
@@ -14,7 +14,6 @@ router.get('/:userId', async (req, res, next) => {
   try {
     const user = await User.findById({ _id: userId });
     if (user) {
-      console.log(user);
       return res.json(user);
     }
     return res.json({});
@@ -61,22 +60,28 @@ router.get('/:userId', async (req, res, next) => {
 
 router.put('/:userId', async (req, res, next) => {
   const { userId } = req.params;
-  const {
-    email, name, lastName, latitude, longitude,
-  } = req.body;
+  const { email, name, lastName, latitude, longitude } = req.body;
   try {
-    // const users = await User.find(email);
-
-    // if (users.legth > 0) {
-    //   for (let i = 0; i < users.length; i++) {
-    //     if (users[i].email === email && users[i].id !== userId) {
-    //       return res.statut(422).json({ error: 'This email exist' });
-    //     }
-    //   }
-    // }
-    const user = await User.findByIdAndUpdate(userId, {
+    const users = await User.find({ email });
+    console.log(email);
+    console.log(users.length);
+    if (users.length > 0) {
+      for (let i = 0; i < users.length; i++) {
+        console.log('entro aqui');
+        console.log(users[i].email);
+        if (users[i].email === email && users[i].id !== userId) {
+          console.log('Este mail ya existe');
+          return res.status(422).json({ error: 'This mail exist' });
+        }
+      }
+    }
+    const user = await User.findByIdAndUpdate(userId, new: false {
       $set: {
-        name, lastName, email, 'location.latitude': latitude, 'location.longitude': longitude,
+        name,
+        lastName,
+        email,
+        'location.latitude': latitude,
+        'location.longitude': longitude,
       },
     });
     // req.session.currentUser = user;
