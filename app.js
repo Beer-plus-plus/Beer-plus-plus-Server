@@ -9,14 +9,15 @@ const MongoStore = require('connect-mongo')(session);
 const cors = require('cors');
 require('dotenv').config();
 
-mongoose.set('useCreateIndex', true);
-mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.set( 'useCreateIndex', true);
+mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: true })
   .then(() => {
     console.log('connected to: ', process.env.MONGO_URL);
   })
   .catch((error) => {
     console.error(error);
   });
+
 
 const authRouter = require('./routes/auth');
 const userRouter = require('./routes/user');
