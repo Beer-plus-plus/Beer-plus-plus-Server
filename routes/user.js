@@ -1,5 +1,5 @@
 const express = require('express');
-const bcrypt = require('bcrypt'); /* Use to change de password */
+const bcrypt = require('bcryptjs'); /* Use to change de password */
 
 const bcryptSalt = 10;
 
@@ -76,15 +76,10 @@ router.put('/:userId', async (req, res, next) => {
     // }
     const user = await User.findByIdAndUpdate(userId, {
       $set: {
-        email,
-        name,
-        lastName,
-        'location.latitude': latitude,
-        'location.longitude': longitude,
+        name, lastName, email, 'location.latitude': latitude, 'location.longitude': longitude,
       },
     });
-    req.session.currentUser = user;
-    console.log(user);
+    // req.session.currentUser = user;
     return res.json(user);
   } catch (err) {
     next(err);
