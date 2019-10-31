@@ -1,5 +1,5 @@
 const express = require('express');
-const bcrypt = require('bcrypt'); /* Use to change de password */
+const bcrypt = require('bcryptjs'); /* Use to change de password */
 
 const bcryptSalt = 10;
 
@@ -63,19 +63,14 @@ router.put('/:userId', async (req, res, next) => {
   const { email, name, lastName, latitude, longitude } = req.body;
   try {
     const users = await User.find({ email });
-    console.log(email);
-    console.log(users.length);
     if (users.length > 0) {
       for (let i = 0; i < users.length; i++) {
-        console.log('entro aqui');
-        console.log(users[i].email);
         if (users[i].email === email && users[i].id !== userId) {
-          console.log('Este mail ya existe');
           return res.status(422).json({ error: 'This mail exist' });
         }
       }
     }
-    const user = await User.findByIdAndUpdate(userId, new: false {
+    const user = await User.findByIdAndUpdate(userId, {
       $set: {
         name,
         lastName,
