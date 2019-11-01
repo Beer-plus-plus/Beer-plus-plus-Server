@@ -1,5 +1,5 @@
 const express = require('express');
-const bcrypt = require('bcryptjs'); /* Use to change de password */
+const bcrypt = require('bcrypt'); /* Use to change de password */
 
 const bcryptSalt = 10;
 
@@ -22,49 +22,48 @@ router.get('/:userId', async (req, res, next) => {
   }
 });
 
-/* To change or update de user password */
+/* Change the password */
 
-// router.put('/:userId/changepass', async (req, res, next) => {
-//   const { userId } = req.params;
-//   const { oldPass, newPass } = req.body;
-//   if (oldPass === newPass) {
-//     return res.status(404).json({ error: 'Old password and New Password cannot be de same.' });
-//   }
-//   try {
-//     const user = await User.findById({ _id: userId });
-//     if (!user) {
-//       return res.status(404).json({ code: 'not-found' });
-//     }
-//     if (bcrypt.compareSync(oldPass, user.hashedPassword)) {
-//       const salt = bcrypt.genSaltSync(bcryptSalt);
-//       const hashedPassword = bcrypt.hashSync(newPass, salt);
-//       const userfinal = await User.findByIdAndUpdate(
-//         {
-//           _id: userId,
-//         },
-//         {
-//           $set: {
-//             hashedPassword,
-//           },
-//         },
-//       );
-//       return res.json(userfinal);
-//     }
-//     return res.status(500).json({ err: 'User not found' });
-//   } catch (err) {
-//     next(err);
-//   }
-// });
+router.put('/:userId/changepass', async (req, res, next) => {
+  const { userId } = req.params;
+  const { oldPass, newPass } = req.body;
+  try {
+    const user = await User.findById({ _id: userId });
+    if (!user) {
+      return res.status(404).json({ code: 'not-found' });
+    }
+    if (bcrypt.compareSync(oldPass, user.hashedPassword)) {
+      const salt = bcrypt.genSaltSync(bcryptSalt);
+      const hashedPassword = bcrypt.hashSync(newPass, salt);
+      const userFinal = await User.findByIdAndUpdate(
+        {
+          _id: userId,
+        },
+        {
+          $set: {
+            hashedPassword,
+          },
+        },
+      );
+      return res.json(userFinal);
+    }
+    return res.status(500).json({ err: 'User Pass isn\'t correct' });
+  } catch (err) {
+    next(err);
+  }
+});
 
 /* Update user data except password */
 
 router.put('/:userId', async (req, res, next) => {
   const { userId } = req.params;
-  const { email, name, lastName, latitude, longitude } = req.body;
+  const {
+ email, name, lastName, latitude, longitude 
+} = req.body;
   try {
     const users = await User.find({ email });
     if (users.length > 0) {
-      for (let i = 0; i < users.length; i++) {
+      for (let i = 0; i < users.length; i += 1) {
         if (users[i].email === email && users[i].id !== userId) {
           return res.status(422).json({ error: 'This mail exist' });
         }
