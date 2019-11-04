@@ -9,7 +9,7 @@ const MongoStore = require('connect-mongo')(session);
 const cors = require('cors');
 require('dotenv').config();
 
-mongoose.set( 'useCreateIndex', true);
+mongoose.set('useCreateIndex', true);
 mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: true })
   .then(() => {
     console.log('connected to: ', process.env.MONGO_URL);
@@ -53,10 +53,13 @@ app.use(
   }),
 );
 
+
+
 app.use((req, res, next) => {
   app.locals.currentUser = req.session.currentUser;
   next();
 });
+
 
 app.use('/', authRouter);
 app.use('/api/user', userRouter);
