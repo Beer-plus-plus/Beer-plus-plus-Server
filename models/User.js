@@ -10,7 +10,7 @@ const userSchema = new Schema(
     name: { type: String },
     lastName: { type: String },
     location: { latitude: { type: Number }, longitude: { type: Number } },
-    img: { name: { type: String }, description: { type: String }, imageUrl: { type: String } },
+    img: { description: { type: String }, imageUrl: { type: String } },
     preferredBeers: [{ type: Schema.Types.ObjectId, ref: 'Beer' }],
     preferredFoods: [{ type: Schema.Types.ObjectId, ref: 'Food' }],
     preferredSites: [{ type: Schema.Types.ObjectId, ref: 'Site' }],

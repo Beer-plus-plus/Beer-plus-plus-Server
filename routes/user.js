@@ -1,5 +1,6 @@
 const express = require('express');
 const bcrypt = require('bcrypt'); /* Use to change de password */
+const uploader = require('../config/cloudinary');
 
 const bcryptSalt = 10;
 
@@ -47,19 +48,34 @@ router.put('/:userId/changepass', async (req, res, next) => {
       );
       return res.json(userFinal);
     }
-    return res.status(500).json({ err: 'User Pass isn\'t correct' });
+    return res.status(500).json({ err: "User Pass isn't correct" });
   } catch (err) {
     next(err);
   }
 });
 
-/* Update user data except password */
+/* Add profile Image */
+
+router.put('/:id/upload', uploader.single('imageUrl'), async (req, res, next) => {
+  if (!req.file) {
+    next(new Error('No file uploaded!'));
+  }
+  try {
+   const user =  await User.findByIdAndUpdate(req.body.id, {
+      $set: { 'img.description': req.body.description, 'img.imageUrl': req.file.secure_url },
+    });
+    console.log(user);
+    res.json({ secure_url: req.file.secure_url });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// /* Update user data except password */
 
 router.put('/:userId', async (req, res, next) => {
   const { userId } = req.params;
-  const {
- email, name, lastName, latitude, longitude 
-} = req.body;
+  const { email, name, lastName, latitude, longitude } = req.body;
   try {
     const users = await User.find({ email });
     if (users.length > 0) {
@@ -85,7 +101,6 @@ router.put('/:userId', async (req, res, next) => {
   }
 });
 
-/* Add profile Image */
 /* List Preferred Beer */
 /* List Preferred Food */
 /* List Preferred Sites */
