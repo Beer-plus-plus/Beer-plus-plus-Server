@@ -21,9 +21,9 @@ router.post('/new', async (req, res, next) => {
     servingTemperature,
   } = req.body;
   const dupla = Beer.find({nameDisplay});
-  if (dupla) {
-    res.status().json
-  }
+  // if (dupla) {
+  //   res.status().json
+  // }
   try {
     const newBeer = await Beer.create({
       nameDisplay,
@@ -55,12 +55,12 @@ router.get('/:page', async (req, res, next) => {
       { headers: { 'Content-Type': 'application/json' } },
     );
     console.log(allBeers);
-    const beers = 1;
-    const numberOfPages = 2;
+    const { data: { data: beers }, numberOfPages } = allBeers;
+    console.log(numberOfPages);
     return res.status(200).json({ beers, numberOfPages });
   } catch (error) {
-    // console.log('hola');
-    // next(error);
+    console.log('hola');
+    next(error);
   }
 });
 
