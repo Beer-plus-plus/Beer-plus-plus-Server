@@ -1,5 +1,5 @@
 const express = require('express');
-const bcrypt = require('bcryptjs'); /* Use to change de password */
+const bcrypt = require('bcrypt'); /* Use to change de password */
 const uploader = require('../config/cloudinary');
 
 const bcryptSalt = 10;
@@ -61,7 +61,7 @@ router.put('/:id/upload', uploader.single('imageUrl'), async (req, res, next) =>
     next(new Error('No file uploaded!'));
   }
   try {
-   const user =  await User.findByIdAndUpdate(req.body.id, {
+    const user = await User.findByIdAndUpdate(req.body.id, {
       $set: { 'img.description': req.body.description, 'img.imageUrl': req.file.secure_url },
     });
     console.log(user);

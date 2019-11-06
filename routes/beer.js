@@ -1,22 +1,9 @@
 const express = require('express');
+const axios = require('axios');
 
 const router = express.Router();
+
 const Beer = require('../models/Beer');
-
-/* get a list o beer on db */
-
-router.get('/', async (req, res, next) => {
-  try {
-    const beer = await Beer.find();
-    return res.json(beer);
-  } catch (err) {
-    next(err);
-  }
-});
-/* get detail o beer */
-/* Update a beer */
-/* Delete a beer */
-/* Create a beer */
 router.post('/new', async (req, res, next) => {
   const {
     nameDisplay,
@@ -52,5 +39,28 @@ router.post('/new', async (req, res, next) => {
     next(err);
   }
 });
+
+/* get a list o beer on db */
+
+router.get('/:page', async (req, res, next) => {
+  console.log('hola')
+  const { page } = req.params;
+  try {
+    const allBeers = await axios.get(
+      `https://sandbox-api.brewerydb.com/v2/beers/?key=${process.env.SAND_BREWERYDB_KEY}&p=${page}`,
+      { headers: { 'Content-Type': 'application/json' } },
+    );
+    const { data: { data: beers, numberOfPages } } = allBeers;
+    console.log(beers);
+    return res.json({ beers, numberOfPages });
+  } catch (error) {
+    next(error);
+  }
+});
+
+
+/* Update a beer */
+/* Delete a beer */
+/* Create a beer */
 
 module.exports = router;
