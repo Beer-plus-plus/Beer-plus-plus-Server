@@ -73,8 +73,13 @@ router.delete('/:id', checkIfLoggedIn, async (req, res, nex) => {
 
 router.get('/beerdetail/:id', checkIfLoggedIn, async (req, res, next) => {
   const { id } = req.params;
-  const beer = await beerConnect.getABeer(id);
-  console.log(beer);
+  try {
+    const data = await beerConnect.getABeer(id);
+    const { data: { data: beer } } = data;
+    return res.json(beer);
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 /* get a list o beer on db */
