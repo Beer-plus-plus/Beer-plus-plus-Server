@@ -7,7 +7,7 @@ const beerSchema = new Schema(
     nameDisplay: { type: String, required: true, unique: true },
     Description: { type: String },
     beerStyle: { type: String },
-    ingredients: [{ name: { type: String }, qty: { type: Number } }],
+    ingredients: [{ name: { type: String } }],
     ABV: { type: Number }, /* Alcohol By Volume */
     IBU: { type: Number }, /* International Bitterness Units */ 
     cal: { type: Number },
@@ -16,6 +16,7 @@ const beerSchema = new Schema(
     brand: { type: String },
     productionYear: { type: Number },
     servingTemperature: { type: Number }, /* Degrees */
+    idBrewerydb: { type: String },
   },
   {
     timestamps: {

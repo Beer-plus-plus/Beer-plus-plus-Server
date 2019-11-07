@@ -1,6 +1,7 @@
 const express = require('express');
-const bcrypt = require('bcrypt'); /* Use to change de password */
+const bcrypt = require('bcryptjs'); /* Use to change de password */
 const uploader = require('../config/cloudinary');
+const { checkIfLoggedIn, checkUsernameAndPasswordNotEmpty, checkUsernameAndPasswordAndEmailNotEmpty } = require('../middlewares');
 
 const bcryptSalt = 10;
 
@@ -10,7 +11,7 @@ const router = express.Router();
 
 /* Get user detail */
 
-router.get('/:userId', async (req, res, next) => {
+router.get('/:userId', checkIfLoggedIn, async (req, res, next) => {
   const { userId } = req.params;
   try {
     const user = await User.findById({ _id: userId });
@@ -25,7 +26,7 @@ router.get('/:userId', async (req, res, next) => {
 
 /* Change the password */
 
-router.put('/:userId/changepass', async (req, res, next) => {
+router.put('/:userId/changepass', checkIfLoggedIn, async (req, res, next) => {
   const { userId } = req.params;
   const { oldPass, newPass } = req.body;
   try {
@@ -56,7 +57,7 @@ router.put('/:userId/changepass', async (req, res, next) => {
 
 /* Add profile Image */
 
-router.put('/:id/upload', uploader.single('imageUrl'), async (req, res, next) => {
+router.put('/:id/upload', checkIfLoggedIn,  uploader.single('imageUrl'), async (req, res, next) => {
   if (!req.file) {
     next(new Error('No file uploaded!'));
   }
@@ -73,7 +74,7 @@ router.put('/:id/upload', uploader.single('imageUrl'), async (req, res, next) =>
 
 // /* Update user data except password */
 
-router.put('/:userId', async (req, res, next) => {
+router.put('/:userId', checkIfLoggedIn, async (req, res, next) => {
   const { userId } = req.params;
   const { email, name, lastName, latitude, longitude } = req.body;
   try {

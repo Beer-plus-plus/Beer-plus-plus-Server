@@ -6,7 +6,11 @@ const router = express.Router();
 
 const Beer = require('../models/Beer');
 
-router.post('/new', async (req, res, next) => {
+const { checkIfLoggedIn } = require('../middlewares');
+
+/* Create a beer or add one is the same function */
+
+router.post('/new', checkIfLoggedIn, async (req, res, next) => {
   const {
     nameDisplay,
     Description,
@@ -19,18 +23,24 @@ router.post('/new', async (req, res, next) => {
     image,
     brand,
     productionYear,
-    servingTemperature,
+    idBrewerydb,
   } = req.body;
-  const dupla = Beer.find({ nameDisplay });
-  // if (dupla) {
-  //   res.status().json
-  // }
   try {
+    const existIdBreweryDb = await Beer.find({ idBrewerydb });
+    //     if (existIdBreweryDb) {
+    //       return res.status(204).json('error this beers already exist! from Api');
+    //     }
+    // console.log(existIdBreweryDb);
+    const existByName = await Beer.find({ nameDisplay });
+    if (existByName) {
+      console.log(existByName);
+      return res.status(204).json({ error: 'error this beers already exist!' });
+    }
     const newBeer = await Beer.create({
       nameDisplay,
       Description,
       beerStyle,
-      ingredients,
+      $push: { ingredients },
       ABV,
       IBU,
       cal,
@@ -38,17 +48,30 @@ router.post('/new', async (req, res, next) => {
       image,
       brand,
       productionYear,
-      servingTemperature,
+      idBrewerydb,
     });
-    res.json(newBeer);
-  } catch (err) {
-    next(err);
+    return res.json(newBeer);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+/* Delete a beer added from de api or created */
+
+router.delete('/:id', checkIfLoggedIn, async (req, res, nex) => {
+  const { id } = req.params;
+  console.log(id);
+  try {
+    const beer = await Beer.findByIdAndDelete({ _id: id });
+    return res.json(beer);
+  } catch (error) {
+    console.log(error);
   }
 });
 
 /* get a beer detail */
 
-router.get('/beerdetail/:id', async (req, res, next) => {
+router.get('/beerdetail/:id', checkIfLoggedIn, async (req, res, next) => {
   const { id } = req.params;
   const beer = await beerConnect.getABeer(id);
   console.log(beer);
@@ -56,7 +79,7 @@ router.get('/beerdetail/:id', async (req, res, next) => {
 
 /* get a list o beer on db */
 
-router.get('/:page', async (req, res, next) => {
+router.get('/:page', checkIfLoggedIn, async (req, res, next) => {
   const { page } = req.params;
   try {
     const allBeers = await beerConnect.getAllBeers(page);
@@ -70,7 +93,5 @@ router.get('/:page', async (req, res, next) => {
 });
 
 /* Update a beer */
-/* Delete a beer */
-/* Create a beer */
 
 module.exports = router;
