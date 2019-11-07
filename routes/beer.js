@@ -1,5 +1,6 @@
 const express = require('express');
-const axios = require('axios');
+
+const beerConnect = require('../middlewares/beerConnect.js');
 
 const router = express.Router();
 
@@ -20,7 +21,7 @@ router.post('/new', async (req, res, next) => {
     productionYear,
     servingTemperature,
   } = req.body;
-  const dupla = Beer.find({nameDisplay});
+  const dupla = Beer.find({ nameDisplay });
   // if (dupla) {
   //   res.status().json
   // }
@@ -45,21 +46,25 @@ router.post('/new', async (req, res, next) => {
   }
 });
 
+/* get a beer detail */
+
+router.get('/beerdetail/:id', async (req, res, next) => {
+  const { id } = req.params;
+  const beer = await beerConnect.getABeer(id);
+  console.log(beer);
+});
+
 /* get a list o beer on db */
 
 router.get('/:page', async (req, res, next) => {
   const { page } = req.params;
   try {
-    const allBeers = await axios.get(
-      `https://sandbox-api.brewerydb.com/v2/beers/?key=${process.env.SAND_BREWERYDB_KEY}&p=${page}`,
-      { headers: { 'Content-Type': 'application/json' } },
-    );
-    console.log(allBeers);
-    const { data: { data: beers }, numberOfPages } = allBeers;
-    console.log(numberOfPages);
+    const allBeers = await beerConnect.getAllBeers(page);
+    const {
+      data: { data: beers, numberOfPages },
+    } = allBeers;
     return res.status(200).json({ beers, numberOfPages });
   } catch (error) {
-    console.log('hola');
     next(error);
   }
 });
