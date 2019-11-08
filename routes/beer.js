@@ -11,19 +11,35 @@ const { checkIfLoggedIn } = require('../middlewares');
 /* Create a beer or add one is the same function */
 
 router.get('/', checkIfLoggedIn, async (req, res, next) => {
-  let totalBeers = [];
+  const totalBeers = [];
   let totalPages = 1;
   try {
     for (let actualPage = 1; actualPage <= totalPages; actualPage += 1) {
       const allBeers = await beerConnect.getAllBeers(actualPage);
       const { data: { data, numberOfPages } } = allBeers;
-      totalPages = numberOfPages;  /* number of pages in the api */
+      totalPages = numberOfPages; /* number of pages in the api */
       for (let beerCounter = 1; beerCounter <= data.length; beerCounter += 1) {
         totalBeers.push(data[beerCounter]);
       }
+ /* Here read all beers from the api */
+  
+ 
+    //   nameDisplay: { type: String, required: true, unique: true },
+    // Description: { type: String },
+    // beerStyle: { type: String },
+    // ingredients: [{ name: { type: String } }],
+    // ABV: { type: Number }, /* Alcohol By Volume */
+    // IBU: { type: Number }, /* International Bitterness Units */
+    // cal: { type: Number },
+    // origin: { type: String }, /* (International Bitterness Units */
+    // image: { type: String },
+    // brand: { type: String },
+    // productionYear: { type: Number },
+    // servingTemperature: { type: Number }, /* Degrees */
+    // idBrewerydb: { type: String },
     }
     console.log(totalBeers);
-    return res.json(totalBeers);
+    return res.status(200).json(totalBeers);
   } catch (error) {
     next(error);
   }
