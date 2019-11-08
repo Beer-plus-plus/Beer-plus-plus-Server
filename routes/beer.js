@@ -17,13 +17,13 @@ router.get('/', checkIfLoggedIn, async (req, res, next) => {
     for (let actualPage = 1; actualPage <= totalPages; actualPage += 1) {
       const allBeers = await beerConnect.getAllBeers(actualPage);
       const { data: { data, numberOfPages } } = allBeers;
-      console.log(data);
-      totalPages = numberOfPages;
+      totalPages = numberOfPages;  /* number of pages in the api */
       for (let beerCounter = 1; beerCounter <= data.length; beerCounter += 1) {
         totalBeers.push(data[beerCounter]);
       }
     }
-    console.log(totalBeers.length);
+    console.log(totalBeers);
+    return res.json(totalBeers);
   } catch (error) {
     next(error);
   }
