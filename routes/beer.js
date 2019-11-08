@@ -10,6 +10,25 @@ const { checkIfLoggedIn } = require('../middlewares');
 
 /* Create a beer or add one is the same function */
 
+router.get('/', checkIfLoggedIn, async (req, res, next) => {
+  let totalBeers = [];
+  let totalPages = 1;
+  try {
+    for (let actualPage = 1; actualPage <= totalPages; actualPage += 1) {
+      const allBeers = await beerConnect.getAllBeers(actualPage);
+      const { data: { data, numberOfPages } } = allBeers;
+      console.log(data);
+      totalPages = numberOfPages;
+      for (let beerCounter = 1; beerCounter <= data.length; beerCounter += 1) {
+        totalBeers.push(data[beerCounter]);
+      }
+    }
+    console.log(totalBeers.length);
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.post('/new', checkIfLoggedIn, async (req, res, next) => {
   const {
     nameDisplay,
@@ -96,6 +115,7 @@ router.get('/:page', checkIfLoggedIn, async (req, res, next) => {
     next(error);
   }
 });
+
 
 /* Update a beer */
 
