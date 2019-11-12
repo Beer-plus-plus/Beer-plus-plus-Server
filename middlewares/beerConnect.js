@@ -18,6 +18,11 @@ class BeerConnect {
     const data = await this.beerConnect.get(`/beer/${id}/?key=${process.env.SAND_BREWERYDB_KEY}`, this.header);
     return data;
   }
+
+  async getABeerIngredients(id) {
+    const data = await this.beerConnect.get(`/beer/${id}/ingredients/?key=${process.env.SAND_BREWERYDB_KEY}`, this.header);
+    return data;
+  }
 }
 
 const beerConnect = new BeerConnect();

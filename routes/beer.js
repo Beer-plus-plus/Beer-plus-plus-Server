@@ -84,6 +84,19 @@ router.get('/beerdetail/:id', checkIfLoggedIn, async (req, res, next) => {
   }
 });
 
+router.get('/beeringredients/:id', checkIfLoggedIn, async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const data = await beerConnect.getABeerIngredients(id);
+    const {
+      data: { data: ingredients },
+    } = data;
+    return res.json(ingredients);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 /* get a list o beer on db */
 
 router.get('/:page', checkIfLoggedIn, async (req, res, next) => {
