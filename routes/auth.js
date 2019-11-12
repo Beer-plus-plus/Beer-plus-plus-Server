@@ -1,5 +1,5 @@
 const express = require('express');
-const bcrypt = require('bcryptjs'); /* Use to change de password */
+const bcrypt = require('bcrypt'); /* Use to change de password */
 
 const { checkUsernameAndPasswordNotEmpty, checkUsernameAndPasswordAndEmailNotEmpty } = require('../middlewares');
 
