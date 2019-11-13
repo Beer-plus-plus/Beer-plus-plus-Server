@@ -26,10 +26,7 @@ router.post('/new', checkIfLoggedIn, async (req, res, next) => {
   } = req.body;
   try {
     const existIdBreweryDb = await Beer.find({ idBrewerydb });
-    //     if (existIdBreweryDb) {
-    //       return res.status(204).json('error this beers already exist! from Api');
-    //     }
-    // console.log(existIdBreweryDb);
+   ;
     const existByName = await Beer.find({ nameDisplay });
     if (existByName) {
       console.log(existByName);
@@ -76,7 +73,7 @@ router.get('/beerdetail/:id', checkIfLoggedIn, async (req, res, next) => {
     const {
       data: { data: beer },
     } = data;
-    
+
     return res.json(beer);
   } catch (error) {
     console.log(error);
@@ -91,10 +88,13 @@ router.get('/beeringredients/:id', checkIfLoggedIn, async (req, res, next) => {
       const {
         data: { data: ingredients },
       } = data;
-      console.log(ingredients);
+      console.log('hello ', ingredients);
       return res.json(ingredients);
     }
-    return res.json({ ingredients: ['Not available'] });
+
+    const data2 = { ingredients: ['Not available'] };
+    console.log('hello ', data);
+    return res.json(data2);
   } catch (error) {
     console.log(error);
   }
