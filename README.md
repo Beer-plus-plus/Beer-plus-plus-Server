@@ -188,7 +188,6 @@ const siteSchema = new Schema(
     ingredients: [{ name: { type: String }, qty: { type: Number } }],
     ABV: { type: Number }, /* Alcohol By Volume */
     IBU: { type: Number }, /* International Bitterness Units */ 
-    cal: { type: Number },
     origin: { type: String }, /* (International Bitterness Units */
     image: { type: String },
     brand: { type: String },
@@ -211,7 +210,6 @@ const foodSchema = new Schema(
     nameDisplay: { type: String, required: true, unique: true },
     Description: { type: String },
     BeerStyle: { type: String },
-    cal: { type: Number },
     image: { type: String },
     brand: { type: String },
     countryOrigin: { type: String },

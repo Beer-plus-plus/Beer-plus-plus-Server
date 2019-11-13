@@ -18,7 +18,6 @@ router.post('/new', checkIfLoggedIn, async (req, res, next) => {
     ingredients,
     ABV,
     IBU,
-    cal,
     origin,
     image,
     brand,
@@ -43,7 +42,6 @@ router.post('/new', checkIfLoggedIn, async (req, res, next) => {
       $push: { ingredients },
       ABV,
       IBU,
-      cal,
       origin,
       image,
       brand,
@@ -78,6 +76,7 @@ router.get('/beerdetail/:id', checkIfLoggedIn, async (req, res, next) => {
     const {
       data: { data: beer },
     } = data;
+    
     return res.json(beer);
   } catch (error) {
     console.log(error);
@@ -88,10 +87,14 @@ router.get('/beeringredients/:id', checkIfLoggedIn, async (req, res, next) => {
   const { id } = req.params;
   try {
     const data = await beerConnect.getABeerIngredients(id);
-    const {
-      data: { data: ingredients },
-    } = data;
-    return res.json(ingredients);
+    if (data.data) {
+      const {
+        data: { data: ingredients },
+      } = data;
+      console.log(ingredients);
+      return res.json(ingredients);
+    }
+    return res.json({ ingredients: ['Not available'] });
   } catch (error) {
     console.log(error);
   }

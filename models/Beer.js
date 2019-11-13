@@ -10,8 +10,7 @@ const beerSchema = new Schema(
     ingredients: [{ name: { type: String } }],
     ABV: { type: Number }, /* Alcohol By Volume */
     IBU: { type: Number }, /* International Bitterness Units */ 
-    cal: { type: Number },
-    origin: { type: String }, /* (International Bitterness Units */
+    origin: { type: String },
     image: { type: String },
     brand: { type: String },
     productionYear: { type: Number },

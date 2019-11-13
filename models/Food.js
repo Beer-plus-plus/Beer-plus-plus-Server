@@ -7,7 +7,6 @@ const foodSchema = new Schema(
     nameDisplay: { type: String, required: true, unique: true },
     Description: { type: String },
     BeerStyle: { type: String },
-    cal: { type: Number } /* Alcohol By Volume */,
     image: { type: String },
     brand: { type: String },
     countryOrigin: { type: String },
