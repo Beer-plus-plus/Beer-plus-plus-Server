@@ -10,40 +10,9 @@ const { checkIfLoggedIn } = require('../middlewares');
 
 /* Create a beer or add one is the same function */
 
-router.post('/new/:id', checkIfLoggedIn, async (req, res, next) => {
+router.post('/new', checkIfLoggedIn, async (req, res, next) => {
   const { beer } = req.body;
-  const { id } = req.params;
-  if (!beer.description) {
-    beer.description = 'Description, not available.';
-  }
-  if (!beer.style.name) {
-    beer.style.name = 'Style, not available.';
-  }
-  if (!beer.ingredients) {
-    beer.ingredients = [{ name: 'No ingredients added.' }];
-  }
-  if (!beer.abv) {
-    beer.abv = -1;
-  }
 
-  if (!beer.ibu) {
-    beer.ibu = -1;
-  }
-  if (!beer.origin) {
-    beer.origin = 'Origin, not available.';
-  }
-  if (!beer.labels) {
-    beer.labels = { medium: '/images/na.svg' };
-  }
-  if (!beer.brand) {
-    beer.brand = 'Brand, not available.';
-  }
-  if (!beer.productionYear) {
-    beer.productionYear = -1;
-  }
-  if (!beer.id) {
-    beer.id = 'na';
-  }
   const {
     nameDisplay,
     description: Description,
@@ -56,6 +25,7 @@ router.post('/new/:id', checkIfLoggedIn, async (req, res, next) => {
     brand,
     productionYear,
     id: idBrewerydb,
+    _id,
   } = req.body.beer;
 
   try {
@@ -71,60 +41,18 @@ router.post('/new/:id', checkIfLoggedIn, async (req, res, next) => {
       brand,
       productionYear,
       idBrewerydb,
-      creator: id,
+      creatorId: _id,
     });
+    return res.json(newBeer);
   } catch (error) {
     console.log(error);
   }
-  //   brand,
-  //   productionYear,
-  //   idBrewerydb,
-  // });
-  // const {
-  //   nameDisplay,
-  //   Description,
-  //   beerStyle,
-  //   ingredients,
-  //   ABV,
-  //   IBU,
-  //   origin,
-  //   image,
-  //   brand,
-  //   productionYear,
-  //   idBrewerydb,
-  // } = req.body;
-  // try {
-  //   const existIdBreweryDb = await Beer.find({ idBrewerydb });
-  //  ;
-  //   const existByName = await Beer.find({ nameDisplay });
-  //   if (existByName) {
-  //     console.log(existByName);
-  //     return res.status(204).json({ error: 'error this beers already exist!' });
-  //   }
-  //   const newBeer = await Beer.create({
-  //     nameDisplay,
-  //     Description,
-  //     beerStyle,
-  //     $push: { ingredients },
-  //     ABV,
-  //     IBU,
-  //     origin,
-  //     image,
-  //     brand,
-  //     productionYear,
-  //     idBrewerydb,
-  //   });
-  //   return res.json(newBeer);
-  // } catch (error) {
-  //   console.log(error);
-  // }
 });
 
 /* Delete a beer added from de api or created */
 
 router.delete('/:id', checkIfLoggedIn, async (req, res, nex) => {
   const { id } = req.params;
-  console.log(id);
   try {
     const beer = await Beer.findByIdAndDelete({ _id: id });
     return res.json(beer);
