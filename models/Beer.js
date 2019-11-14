@@ -16,6 +16,7 @@ const beerSchema = new Schema(
     productionYear: { type: Number },
     servingTemperature: { type: Number }, /* Degrees */
     idBrewerydb: { type: String },
+    creatorId: { type: Schema.Types.ObjectId, ref: 'User' },
   },
   {
     timestamps: {

@@ -10,8 +10,9 @@ const { checkIfLoggedIn } = require('../middlewares');
 
 /* Create a beer or add one is the same function */
 
-router.post('/new', checkIfLoggedIn, async (req, res, next) => {
+router.post('/new/:id', checkIfLoggedIn, async (req, res, next) => {
   const { beer } = req.body;
+  const { id } = req.params;
   if (!beer.description) {
     beer.description = 'Description, not available.';
   }
@@ -21,58 +22,60 @@ router.post('/new', checkIfLoggedIn, async (req, res, next) => {
   if (!beer.ingredients) {
     beer.ingredients = [{ name: 'No ingredients added.' }];
   }
-  console.log(beer.ingredients);
-
   if (!beer.abv) {
     beer.abv = -1;
   }
-  console.log(beer.abv);
 
   if (!beer.ibu) {
     beer.ibu = -1;
   }
-
   if (!beer.origin) {
     beer.origin = 'Origin, not available.';
   }
-  console.log(beer.origin);
-
   if (!beer.labels) {
     beer.labels = { medium: '/images/na.svg' };
   }
-  console.log(beer.labels.medium);
-
   if (!beer.brand) {
     beer.brand = 'Brand, not available.';
   }
-  console.log(beer.brand);
-
   if (!beer.productionYear) {
     beer.productionYear = -1;
   }
-  console.log(beer.productionYear);
-
   if (!beer.id) {
     beer.id = 'na';
   }
-  console.log(beer.id);
-  const { nameDisplay, description: Description, style: { name: beerStyle } } = req.body.beer;
+  const {
+    nameDisplay,
+    description: Description,
+    style: { name: beerStyle },
+    ingredients,
+    abv: ABV,
+    ibu: IBU,
+    origin,
+    labels: { medium: image },
+    brand,
+    productionYear,
+    id: idBrewerydb,
+  } = req.body.beer;
 
   try {
-    const newBeer = await Beer.create({ nameDisplay, Description, beerStyle });
+    const newBeer = await Beer.create({
+      nameDisplay,
+      Description,
+      beerStyle,
+      ingredients,
+      ABV,
+      IBU,
+      origin,
+      image,
+      brand,
+      productionYear,
+      idBrewerydb,
+      creator: id,
+    });
   } catch (error) {
     console.log(error);
   }
-
-
-  //   nameDisplay,
-  //   description,
-  //   beerStyle: style.name,
-  //   ingredients,
-  //   abv: ABV,
-  //   ibu: IBU,
-  //   origin,
-  //   image,
   //   brand,
   //   productionYear,
   //   idBrewerydb,
