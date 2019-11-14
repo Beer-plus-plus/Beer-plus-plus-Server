@@ -36,7 +36,7 @@ router.post('/signup', checkUsernameAndPasswordAndEmailNotEmpty, async (req, res
     const salt = bcrypt.genSaltSync(bcryptSalt);
     const hashedPassword = bcrypt.hashSync(password, salt);
     const newUser = await User.create({
-      username, hashedPassword, email, 'img.description': 'User default image', 'img.imageUrl': 'user.svg',
+      username, hashedPassword, email, 'img.description': 'User default image', 'img.imageUrl': '/images/user.svg',
     });
     req.session.currentUser = newUser;
     return res.json(newUser);
