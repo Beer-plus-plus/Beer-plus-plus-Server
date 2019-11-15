@@ -116,8 +116,7 @@ router.get('/:page/:user', checkIfLoggedIn, async (req, res, next) => {
       data: { data: beers, numberOfPages },
     } = allBeers;
     /* Here try to look if a beer exist in the database and say to user if is preferrered por him/his to lock de button to preferred beer*/
-
-    const beersPreferred = User.findById({ _id: user });
+    const beersPreferred = User.findById({ _id: user }).populate('preferredBeers');
     console.log(beersPreferred);
     return res.status(200).json({ beers, numberOfPages });
   } catch (error) {
