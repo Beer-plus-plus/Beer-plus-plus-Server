@@ -51,7 +51,7 @@ router.post('/new', checkIfLoggedIn, async (req, res, next) => {
       creatorId: userId,
     });
     console.log(newBeer);
-    const modifiedUser = await User.findByIdAndUpdate(newBeer.creatorId, { $push: { preferredBeers: newBeer._id   }} );
+    const modifiedUser = await User.findByIdAndUpdate(newBeer.creatorId, { $push: { preferredBeers: newBeer._id } });
     console.log(newBeer);
     return res.json(modifiedUser);
   } catch (error) {
@@ -106,15 +106,19 @@ router.get('/beeringredients/:id', checkIfLoggedIn, async (req, res, next) => {
 
 /* get a list o beer on db */
 
-router.get('/:page', checkIfLoggedIn, async (req, res, next) => {
-  const { page } = req.params;
+router.get('/:page/:user', checkIfLoggedIn, async (req, res, next) => {
+  console.log('hola')
+  const { page, user } = req.params;
+  console.log(user);
   try {
     const allBeers = await beerConnect.getAllBeers(page);
     const {
       data: { data: beers, numberOfPages },
     } = allBeers;
     /* Here try to look if a beer exist in the database and say to user if is preferrered por him/his to lock de button to preferred beer*/
-    
+
+    const beersPreferred = User.findById({ _id: user });
+    console.log(beersPreferred);
     return res.status(200).json({ beers, numberOfPages });
   } catch (error) {
     next(error);
