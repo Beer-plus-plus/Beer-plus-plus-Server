@@ -1,7 +1,11 @@
 const express = require('express');
 const bcrypt = require('bcryptjs'); /* Use to change de password */
 const uploader = require('../config/cloudinary');
-const { checkIfLoggedIn, checkUsernameAndPasswordNotEmpty, checkUsernameAndPasswordAndEmailNotEmpty } = require('../middlewares');
+const {
+  checkIfLoggedIn,
+  checkUsernameAndPasswordNotEmpty,
+  checkUsernameAndPasswordAndEmailNotEmpty,
+} = require('../middlewares');
 
 const bcryptSalt = 10;
 
@@ -57,7 +61,7 @@ router.put('/:userId/changepass', checkIfLoggedIn, async (req, res, next) => {
 
 /* Add profile Image */
 
-router.put('/:id/upload', checkIfLoggedIn,  uploader.single('imageUrl'), async (req, res, next) => {
+router.put('/:id/upload', checkIfLoggedIn, uploader.single('imageUrl'), async (req, res, next) => {
   if (!req.file) {
     next(new Error('No file uploaded!'));
   }
@@ -66,7 +70,7 @@ router.put('/:id/upload', checkIfLoggedIn,  uploader.single('imageUrl'), async (
       $set: { 'img.description': req.body.description, 'img.imageUrl': req.file.secure_url },
     });
     console.log(user);
-    res.json({ secure_url: req.file.secure_url });
+    return res.json({ secure_url: req.file.secure_url });
   } catch (err) {
     next(err);
   }
@@ -102,6 +106,36 @@ router.put('/:userId', checkIfLoggedIn, async (req, res, next) => {
   }
 });
 
+router.put('/:id/unpreferredBeer', checkIfLoggedIn, async (req, res, next) => {
+  const { id } = req.params;
+  const { beerId } = req.body;
+  try {
+    const unpreferredBeer = await User.findByIdAndUpdate(
+      { _id: id },
+      {
+        $pull: {
+          preferredBeers: { $in: beerId },
+        },
+      },
+    );
+    return res.status(200).json();
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+router.put('/:id/preferredBeer', checkIfLoggedIn, async (req, res, next) => {
+  const { id } = req.params;
+
+  const { beerId } = req.body;
+
+  try {
+    const preferredBeer = await User.findByIdAndUpdate(id, { $push: { preferredBeers: [beerId] } });
+    //   return res.status(200).json(preferredBeer);
+  } catch (error) {
+    console.log(error);
+  }
+});
 /* List Preferred Beer */
 /* List Preferred Food */
 /* List Preferred Sites */

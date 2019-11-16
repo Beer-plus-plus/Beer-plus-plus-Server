@@ -13,19 +13,33 @@ const { checkIfLoggedIn } = require('../middlewares');
 
 router.post('/new', checkIfLoggedIn, async (req, res, next) => {
   const { beer } = req.body;
-  console.log('la birra tiene', req.body.beer);
+
   try {
     if (beer.id) {
-      const aBeer = await Beer.find({ idBrewerydb: beer.id });
-      if (aBeer.idBrewerydb === beer.id) {
-        return res.status(404).json('error');
+      /*  if beer id exist the beer cames from api */
+      const aBeer = await Beer.findOne({ idBrewerydb: beer.id });
+      console.log(aBeer);
+      if (aBeer) {
+        if (aBeer.idBrewerydb === beer.id) {
+          console.log('beer exist from api');
+          console.log(aBeer._id);
+          return res.status(200).json(aBeer._id);
+        }
+      }
+    } else {
+      const aBeer = await Beer.findOne({ nameDisplay: beer.nameDisplay });
+      if (aBeer.length > 0) {
+        console.log('beer exist data base');
+        return res.status(204).json(aBeer._id);
       }
     }
+    console.log('continuo con la creacion');
+    console.log(req.body.labels);
+
     const {
       nameDisplay,
       description: Description,
       style: { name: beerStyle },
-
       abv: ABV,
       ibu: IBU,
       origin,
@@ -35,7 +49,9 @@ router.post('/new', checkIfLoggedIn, async (req, res, next) => {
       id: idBrewerydb,
     } = req.body.beer;
     const { userId } = req.body;
+    console.log(userId);
     const { ingredients } = req.body;
+    console.log(ingredients);
     const newBeer = await Beer.create({
       nameDisplay,
       Description,
@@ -50,10 +66,7 @@ router.post('/new', checkIfLoggedIn, async (req, res, next) => {
       idBrewerydb,
       creatorId: userId,
     });
-    console.log(newBeer);
-    const modifiedUser = await User.findByIdAndUpdate(newBeer.creatorId, { $push: { preferredBeers: newBeer._id } });
-    console.log(newBeer);
-    return res.json(modifiedUser);
+    return res.status(200).json(newBeer._id);
   } catch (error) {
     console.log(error);
   }
@@ -80,7 +93,18 @@ router.get('/beerdetail/:id', checkIfLoggedIn, async (req, res, next) => {
     const {
       data: { data: beer },
     } = data;
-
+    const userBeers = await User.findById({ _id: req.session.currentUser._id }).populate('preferredBeers');
+    const { preferredBeers } = userBeers;
+    if (preferredBeers.length > 0) {
+      for (let i = 0; i < preferredBeers.length; i += 1) {
+        if (preferredBeers[i].idBrewerydb !== 'none') {
+          if (preferredBeers[i].idBrewerydb === beer.id) {
+            beer.state = 'lock';
+            beer.idbplusplus = preferredBeers[i].id;
+          }
+        }
+      }
+    }
     return res.json(beer);
   } catch (error) {
     console.log(error);
@@ -107,17 +131,25 @@ router.get('/beeringredients/:id', checkIfLoggedIn, async (req, res, next) => {
 /* get a list o beer on db */
 
 router.get('/:page/:user', checkIfLoggedIn, async (req, res, next) => {
-  console.log('hola')
   const { page, user } = req.params;
-  console.log(user);
   try {
     const allBeers = await beerConnect.getAllBeers(page);
     const {
       data: { data: beers, numberOfPages },
     } = allBeers;
-    /* Here try to look if a beer exist in the database and say to user if is preferrered por him/his to lock de button to preferred beer*/
-    const beersPreferred = User.findById({ _id: user }).populate('preferredBeers');
-    console.log(beersPreferred);
+    const beersPreferred = await User.findById({ _id: user }).populate('preferredBeers');
+    const { preferredBeers } = beersPreferred; /* List of user preferredBeers; */
+    if (preferredBeers.length > 0) {
+      for (let i = 0; i < preferredBeers.length; i += 1) {
+        for (let j = 0; j < beers.length; j += 1) {
+          if (preferredBeers[i].idBrewerydb !== 'none') {
+            if (preferredBeers[i].idBrewerydb === beers[j].id) {
+              beers[j].state = 'lock';
+            }
+          }
+        }
+      }
+    }
     return res.status(200).json({ beers, numberOfPages });
   } catch (error) {
     next(error);
