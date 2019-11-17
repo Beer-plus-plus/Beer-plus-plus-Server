@@ -131,7 +131,8 @@ router.put('/:id/preferredBeer', checkIfLoggedIn, async (req, res, next) => {
 
   try {
     const preferredBeer = await User.findByIdAndUpdate(id, { $push: { preferredBeers: [beerId] } });
-    //   return res.status(200).json(preferredBeer);
+    console.log('llego hasta aqui a la salida de user preferred beer')
+    return res.status(200).json(preferredBeer);
   } catch (error) {
     console.log(error);
   }

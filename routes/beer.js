@@ -13,12 +13,14 @@ const { checkIfLoggedIn } = require('../middlewares');
 
 router.post('/new', checkIfLoggedIn, async (req, res, next) => {
   const { beer } = req.body;
-
+  const { ingredients } = req.body;
+  console.log('contents of ingredients tururur', req.body.ingredients);
+  console.log('conteido de beer', beer);
   try {
     if (beer.id) {
       /*  if beer id exist the beer cames from api */
       const aBeer = await Beer.findOne({ idBrewerydb: beer.id });
-      console.log(aBeer);
+      console.log('imprimo a aBeer', aBeer);
       if (aBeer) {
         if (aBeer.idBrewerydb === beer.id) {
           console.log('beer exist from api');
@@ -34,7 +36,7 @@ router.post('/new', checkIfLoggedIn, async (req, res, next) => {
       }
     }
     console.log('continuo con la creacion');
-    console.log(req.body.labels);
+    console.log('contenido de beer,labels', req.body.beer.labels);
 
     const {
       nameDisplay,
@@ -49,9 +51,9 @@ router.post('/new', checkIfLoggedIn, async (req, res, next) => {
       id: idBrewerydb,
     } = req.body.beer;
     const { userId } = req.body;
-    console.log(userId);
     const { ingredients } = req.body;
-    console.log(ingredients);
+    
+    console.log('%c%s', 'color: #f2ceb6', 'sigo aqui');
     const newBeer = await Beer.create({
       nameDisplay,
       Description,
@@ -94,8 +96,9 @@ router.get('/beerdetail/:id', checkIfLoggedIn, async (req, res, next) => {
       data: { data: beer },
     } = data;
     const userBeers = await User.findById({ _id: req.session.currentUser._id }).populate('preferredBeers');
-    const { preferredBeers } = userBeers;
-    if (preferredBeers.length > 0) {
+    
+    if (userBeers.preferredBeers.length > 0) {
+      const { preferredBeers } = userBeers;
       for (let i = 0; i < preferredBeers.length; i += 1) {
         if (preferredBeers[i].idBrewerydb !== 'none') {
           if (preferredBeers[i].idBrewerydb === beer.id) {
