@@ -231,10 +231,12 @@ const foodSchema = new Schema(
 
 ### Git
 
-[Repository Link](https://github.com/Beer-plus-plus/Beer-plus-plus-Client)
+[Repository Link FrontEnd](https://github.com/Beer-plus-plus/Beer-plus-plus-Client)
 
-[Deploy Link](deploy)
+[Repository Link BackEnd] (https://github.com/Beer-plus-plus/Beer-plus-plus-Server)
+
+[Deploy Link](https://beer-plus-plus.netlify.com/ )
 
 ### Slides
 
-[Slides Link](slides)
+[Slides Link](https://slides.com/juanvicentevazquezgarcia/deck-399a59/live#/)
