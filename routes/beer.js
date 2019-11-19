@@ -11,6 +11,17 @@ const { checkIfLoggedIn } = require('../middlewares');
 
 /* Create a beer or add one is the same function */
 
+router.get('/db', checkIfLoggedIn, async (req, res, next) => {
+  try {
+    const allBeers = await Beer.find();
+   
+    console.log(allBeers);
+    return res.json(allBeers);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 router.post('/new', checkIfLoggedIn, async (req, res, next) => {
   const { beer } = req.body;
   const { ingredients } = req.body;
