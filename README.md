@@ -22,7 +22,7 @@ SPA about beers, which shows where to drink them and with which to pair them
 
 - As a User I want to be able to modify all my profile data and have it updated.
 - As a User I want to be able to add an image to my user profile, so that other users can see me.
-- As a User I want to be able to change the access password. 
+- As a User I want to be able to change the access password.
 
 **Beer**
 
@@ -133,8 +133,8 @@ const userSchema = new Schema(
     email: { type: String, required: true, unique: true },
     name: { type: String },
     lastName: { type: String },
-    location: { latitude: { type: Number }, longitude: { type: Number }, },
-    img: { name: { type: String }, description: { type: String }, imageUrl: { type: String } },
+    location: { latitude: { type: Number }, longitude: { type: Number } },
+    img: { description: { type: String }, imageUrl: { type: String } },
     preferredBeers: [{ type: Schema.Types.ObjectId, ref: 'Beer' }],
     preferredFoods: [{ type: Schema.Types.ObjectId, ref: 'Food' }],
     preferredSites: [{ type: Schema.Types.ObjectId, ref: 'Site' }],
@@ -180,19 +180,21 @@ const siteSchema = new Schema(
 **_Beer Model_**
 
 ```javascript
-  const beerSchema = new Schema(
+const beerSchema = new Schema(
   {
-    nameDisplay: { type: String, required: true, unique: true },
+    nameDisplay: { type: String },
     Description: { type: String },
     beerStyle: { type: String },
-    ingredients: [{ name: { type: String }, qty: { type: Number } }],
-    ABV: { type: Number }, /* Alcohol By Volume */
-    IBU: { type: Number }, /* International Bitterness Units */ 
-    origin: { type: String }, /* (International Bitterness Units */
+    ingredients: { type: String },
+    ABV: { type: Number } /* Alcohol By Volume */,
+    IBU: { type: Number } /* International Bitterness Units */,
+    origin: { type: String },
     image: { type: String },
     brand: { type: String },
     productionYear: { type: Number },
-    servingTemperature: { type: Number }, /* Degrees */
+    servingTemperature: { type: Number } /* Degrees */,
+    idBrewerydb: { type: String },
+    creatorId: { type: Schema.Types.ObjectId, ref: 'User' },
   },
   {
     timestamps: {
@@ -202,6 +204,7 @@ const siteSchema = new Schema(
   },
 );
 ```
+
 **_Food Model_**
 
 ```javascript
