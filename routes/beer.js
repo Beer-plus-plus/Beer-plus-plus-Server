@@ -56,7 +56,6 @@ router.post('/new', checkIfLoggedIn, async (req, res, next) => {
     } = req.body.beer;
     const { userId } = req.body;
     const { ingredients } = req.body;
-   
 
     const newBeer = await Beer.create({
       nameDisplay,
@@ -72,8 +71,7 @@ router.post('/new', checkIfLoggedIn, async (req, res, next) => {
       idBrewerydb,
       creatorId: userId,
     });
-      nameDisplay,
-      console.log('%c%s', 'color: #00e600', newBeer);
+    nameDisplay, console.log('%c%s', 'color: #00e600', newBeer);
     return res.status(200).json(newBeer._id);
   } catch (error) {
     console.log(error);
@@ -124,7 +122,7 @@ router.get('/beeringredients/:id', checkIfLoggedIn, async (req, res, next) => {
   const { id } = req.params;
   try {
     const data = await beerConnect.getABeerIngredients(id);
-    console.log('ingredients',data)
+    console.log('ingredients', data);
     if (data) {
       if (data.data) {
         const {
@@ -155,13 +153,6 @@ router.get('/:page/:user', checkIfLoggedIn, async (req, res, next) => {
     const {
       data: { data: beers, numberOfPages },
     } = allBeers;
-
-
-
-
-
-
-    
     const beersPreferred = await User.findById({ _id: user }).populate('preferredBeers');
     const { preferredBeers } = beersPreferred; /* List of user preferredBeers; */
     if (preferredBeers.length > 0) {
@@ -175,7 +166,6 @@ router.get('/:page/:user', checkIfLoggedIn, async (req, res, next) => {
         }
       }
     }
-
 
     return res.status(200).json({ beers, numberOfPages });
   } catch (error) {
