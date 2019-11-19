@@ -114,10 +114,11 @@ router.put('/:id/unpreferredBeer', checkIfLoggedIn, async (req, res, next) => {
       { _id: id },
       {
         $pull: {
-          preferredBeers: { $in: beerId },
+          preferredBeers: beerId
         },
       },
     );
+  
     return res.status(200).json();
   } catch (error) {
     console.log(error);
@@ -131,7 +132,7 @@ router.put('/:id/preferredBeer', checkIfLoggedIn, async (req, res, next) => {
 
   try {
     const preferredBeer = await User.findByIdAndUpdate(id, { $push: { preferredBeers: [beerId] } });
-    console.log('llego hasta aqui a la salida de user preferred beer')
+    console.log('llego hasta aqui a la salida de user preferred beer');
     return res.status(200).json(preferredBeer);
   } catch (error) {
     console.log(error);

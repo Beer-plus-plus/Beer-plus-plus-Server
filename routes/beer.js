@@ -30,13 +30,17 @@ router.post('/new', checkIfLoggedIn, async (req, res, next) => {
       }
     } else {
       const aBeer = await Beer.findOne({ nameDisplay: beer.nameDisplay });
-      if (aBeer.length > 0) {
-        console.log('beer exist data base');
-        return res.status(204).json(aBeer._id);
+
+      if (aBeer) {
+        if (aBeer.length > 0) {
+          console.log('eeeeoooo');
+          console.log('beer exist data base');
+          return res.status(204).json(aBeer._id);
+        }
       }
     }
     console.log('continuo con la creacion');
-    console.log('contenido de beer,labels', req.body.beer.labels);
+    console.log('contenido de beer,style', req.body.beer.style);
 
     const {
       nameDisplay,
@@ -52,8 +56,8 @@ router.post('/new', checkIfLoggedIn, async (req, res, next) => {
     } = req.body.beer;
     const { userId } = req.body;
     const { ingredients } = req.body;
-    
-    console.log('%c%s', 'color: #f2ceb6', 'sigo aqui');
+   
+
     const newBeer = await Beer.create({
       nameDisplay,
       Description,
@@ -68,6 +72,8 @@ router.post('/new', checkIfLoggedIn, async (req, res, next) => {
       idBrewerydb,
       creatorId: userId,
     });
+      nameDisplay,
+      console.log('%c%s', 'color: #00e600', newBeer);
     return res.status(200).json(newBeer._id);
   } catch (error) {
     console.log(error);
@@ -96,7 +102,7 @@ router.get('/beerdetail/:id', checkIfLoggedIn, async (req, res, next) => {
       data: { data: beer },
     } = data;
     const userBeers = await User.findById({ _id: req.session.currentUser._id }).populate('preferredBeers');
-    
+
     if (userBeers.preferredBeers.length > 0) {
       const { preferredBeers } = userBeers;
       for (let i = 0; i < preferredBeers.length; i += 1) {
@@ -118,13 +124,22 @@ router.get('/beeringredients/:id', checkIfLoggedIn, async (req, res, next) => {
   const { id } = req.params;
   try {
     const data = await beerConnect.getABeerIngredients(id);
-    if (data.data) {
-      const {
-        data: { data: ingredients },
-      } = data;
-      return res.json(ingredients);
+    console.log('ingredients',data)
+    if (data) {
+      if (data.data) {
+        const {
+          data: { data: ingredients },
+        } = data;
+        if (ingredients) {
+          let ingredients2 = '';
+          for (let i = 0; i < ingredients.length; i += 1) {
+            ingredients2 = `${ingredients2}, ${ingredients[i].name}`;
+          }
+          return res.json(ingredients2);
+        }
+      }
     }
-    const data2 = { ingredients: ['Not available'] };
+    const data2 = 'No ingredients added.';
     return res.json(data2);
   } catch (error) {
     console.log(error);
@@ -140,6 +155,13 @@ router.get('/:page/:user', checkIfLoggedIn, async (req, res, next) => {
     const {
       data: { data: beers, numberOfPages },
     } = allBeers;
+
+
+
+
+
+
+    
     const beersPreferred = await User.findById({ _id: user }).populate('preferredBeers');
     const { preferredBeers } = beersPreferred; /* List of user preferredBeers; */
     if (preferredBeers.length > 0) {
@@ -153,6 +175,8 @@ router.get('/:page/:user', checkIfLoggedIn, async (req, res, next) => {
         }
       }
     }
+
+
     return res.status(200).json({ beers, numberOfPages });
   } catch (error) {
     next(error);
